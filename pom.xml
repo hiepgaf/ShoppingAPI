@@ -87,7 +87,12 @@
 			<version>1.5.13</version>
 		</dependency>
 
-		<!-- JAX-RS -->
+		<!-- Logging -->
+		<dependency>
+		    <groupId>net.gini.dropwizard</groupId>
+		    <artifactId>dropwizard-gelf</artifactId>
+		    <version>1.0.0-2</version>
+		</dependency>
 
 		<!-- Dependency Injection -->
 		<dependency>

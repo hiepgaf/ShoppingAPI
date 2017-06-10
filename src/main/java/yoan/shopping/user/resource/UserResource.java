@@ -27,8 +27,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.codahale.metrics.annotation.Metered;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -63,6 +64,8 @@ import yoan.shopping.user.representation.UserWriteRepresentation;
 @Api(value = "User", authorizations = { @Authorization(value = SECURITY_DEFINITION_OAUTH2, scopes = {})})
 @Produces({ "application/json", "application/xml" })
 public class UserResource extends RestAPI {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
 	
 	private final UserRepository userRepo;
 	private final SecuredUserRepository securedUserRepo;
@@ -125,6 +128,7 @@ public class UserResource extends RestAPI {
 		@ApiResponse(code = 400, message = "Invalid user Id", response = ErrorRepresentation.class),
 		@ApiResponse(code = 404, message = "User not found", response = ErrorRepresentation.class) })
 	public Response getById(@ApiParam(hidden = true) @Auth User connectedUser, @PathParam("userId") @ApiParam(value = "User identifier", required = true, example = "a7b58ac5-ecc0-43b0-b07e-8396b2065439") String userIdStr) {
+		LOGGER.info("Finding user with Id : " + userIdStr);
 		User foundUser = findUserById(userIdStr);
 		UserRepresentation foundUserRepresentation = new UserRepresentation(foundUser, getUriInfo());
 		return Response.ok().entity(foundUserRepresentation).build();
